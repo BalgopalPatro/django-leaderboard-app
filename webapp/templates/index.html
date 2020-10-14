@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Index</title>
+    {% load static %}
+  </head>
+  <body>
+    <h1>Updated at {{time}}</h1>
+    <table border=1 align="" >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>track 1</th>
+          <th>track 2</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in data %}
+            <tr>
+                <td> <img src={{r.pic}} style="border-radius:50%" > {{r.name}}</td>
+                <td>{{r.track1}}</td>
+                <td>{{r.track2}}</td>
+                <td>{{r.total }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% comment %} <script>
+      var data  = {{data|safe}}
+      console.log(data)
+    </script> {% endcomment %}
+  </body>
+</html>
