@@ -17,7 +17,7 @@ from django.http import HttpResponse,HttpResponseNotFound
 from django.views.decorators.http import require_http_methods  
 from django.template import loader
 
-dataset=pd.read_csv('qq_urls.csv')
+dataset=pd.read_csv('qwiklabs_url.csv')
 urls=dataset['Qwiklabs Profile URL'].values
 track1=[
     'Getting Started: Create and Manage Cloud Resources',
@@ -55,7 +55,6 @@ def updateList():
         soup = BeautifulSoup(html, "html.parser")
         name=soup.title.string
         n=name.split('|')
-        # print(n[0])
         profile['name'] = n[0]
         profilezz = soup.findAll('div', attrs = {'class':'public-profile__hero'})[0]
         dp = profilezz.img['src']
@@ -64,16 +63,15 @@ def updateList():
         x=contentTable.get_text()
         res = [int(i) for i in x.split() if i.isdigit()]
         x=x.replace(" . ","\n")
-        # print(res)
         profile['labs'] = res[0]
         profile['quests'] = res[1]
-        badge  = soup.findAll('div', { "class" : "public-profile__badge"})
+        badge  = soup.findAll('ql-badge')
         t1 = []
         t2 = []
         bg = []
         for b in badge:
-            sb = b.findAll('div')[1].get_text().replace('\n',"")
-            bg.append(b.findAll('div')[1].get_text().replace('\n',""))
+            l = json.loads(str(b['badge']))
+            sb = l['title']
             if sb in track1:
                 t1.append(sb)
             if sb in track2:
@@ -83,8 +81,9 @@ def updateList():
         profile['total'] = len(t1) + len(t2)
         allProfiles.append(profile)
     allProfiles.sort(key=lambda x: x['total'], reverse=True)
-    allProfiles.append({'time' : str(datetime.datetime.now())})
+    allProfiles.append({'time' : str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))})
     # PUBLIC_DIR =  os.path.join(BASE_DIR, 'webapp')
+    print(allProfiles)
     last_update_time = datetime.datetime.now()
     with open("my.json" ,"w") as f:
         json.dump(allProfiles,f)
@@ -105,9 +104,9 @@ def index(request):
     print(BASE_DIR)
     with open('my.json') as f:
         allData = json.load(f)
-    print(allData)
+    # print(allData)
     data = {
-       'data' : allData[:-1],
+       'data' : allData[:50],
        'time' : allData[-1]['time']
     }
     return HttpResponse(template.render(data))

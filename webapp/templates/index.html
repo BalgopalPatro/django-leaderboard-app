@@ -2,35 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Index</title>
+    <title>DSC VSSUT</title>
     {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="icon"
+      href="{% static '/assets/img/logo.png' %}"
+      type="image/icon type"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/particle.css' %}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
   </head>
+  <div id="particles-js"></div>
   <body>
-    <h1>Updated at {{time}}</h1>
-    <table border=1 align="" >
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>track 1</th>
-          <th>track 2</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for r in data %}
-            <tr>
-                <td> <img src={{r.pic}} style="border-radius:50%" > {{r.name}}</td>
-                <td>{{r.track1}}</td>
-                <td>{{r.track2}}</td>
-                <td>{{r.total }}</td>
-            </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="ani-text">
+      <p class="top-heading">
+        <span> 30 Days of Google Cloud | VSSUT </span>
+      </p>
+    </div>
+    <div class="header-subtitle">
+      <a
+        href="https://www.linkedin.com/company/dsc-vssut-burla/"
+        rel="noopener"
+        target="_blank"
+      >
+        Made with <span style="color: #e25555"> ♥ </span> By DSC VSSUT
+      </a>
+      <p class="u-text--right">Last updated : {{time}}</p>
+    </div>
+    <div class="l-wrapper">
+      <div class="c-card">
+        <div class="c-card__body">
+          <ul class="c-list" id="list">
+            <li class="c-list__item">
+              <div class="c-list__grid">
+                <div class="u-text--left">Rank</div>
+                <div class="u-text--center">Name</div>
+                <div class="u-text--right"># of Quests</div>
+              </div>
+            </li>
 
-    {% comment %} <script>
+            {% for r in data %}
+            <li class="c-list__item">
+              <div class="c-list__grid">
+                <div class="c-flag c-place u-bg--transparent">{{forloop.counter}}</div>
+                <div class="c-media">
+                  <img class="c-avatar c-media__img" src="{{r.pic}}" />
+                  <div class="c-media__content">
+                    <div class="c-media__title">{{r.name}}</div>
+                    <a class="c-media__link">Track 1 - {{r.track1}}</a>
+                    <br />
+                    <br />
+                    <a class="c-media__link">Track 2 - {{r.track2}}</a>
+                  </div>
+                </div>
+                <div class="u-text--right c-kudos">
+                  <div class="u-mt--8">
+                    <strong>{{r.total}}</strong>
+                  </div>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static '/assets/js/index.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{% static '/assets/js/particle.js' %}"></script>
+    {% comment %}
+    <script>
       var data  = {{data|safe}}
       console.log(data)
-    </script> {% endcomment %}
+    </script>
+    {% endcomment %}
   </body>
 </html>
