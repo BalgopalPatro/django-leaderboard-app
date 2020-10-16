@@ -12,10 +12,14 @@ import csv
 import json
 import datetime
 
+from firebase import firebase
+# https://calculator-45215.firebaseio.com/
 # Create your views here.
 from django.http import HttpResponse,HttpResponseNotFound  
 from django.views.decorators.http import require_http_methods  
 from django.template import loader
+
+firebase = firebase.FirebaseApplication('https://calculator-45215.firebaseio.com/', None)
 
 dataset=pd.read_csv('qwiklabs_url.csv')
 urls=dataset['Qwiklabs Profile URL'].values
@@ -83,10 +87,10 @@ def updateList():
     allProfiles.sort(key=lambda x: x['total'], reverse=True)
     allProfiles.append({'time' : str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))})
     # PUBLIC_DIR =  os.path.join(BASE_DIR, 'webapp')
-    print(allProfiles)
-    last_update_time = datetime.datetime.now()
-    with open("my.json" ,"w") as f:
-        json.dump(allProfiles,f)
+    # print(allProfiles)
+    firebase.delete('/','rank')
+    result = firebase.post('/rank', allProfiles)
+    print(result)
 
 
 # updateList()
@@ -102,9 +106,11 @@ def Hello():
 def index(request):
     template = loader.get_template('index.html')
     print(BASE_DIR)
-    with open('my.json') as f:
-        allData = json.load(f)
+    # with open('my.json') as f:
+    #     allData = json.load(f)
     # print(allData)
+    result = firebase.get('/rank',None)
+    allData = list( result.values() )[0]
     data = {
        'data' : allData[:50],
        'time' : allData[-1]['time']
