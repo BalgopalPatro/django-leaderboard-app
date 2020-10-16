@@ -17,7 +17,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'add-every-5-seconds': {
         'task': 'webapp.views.updateList',
-        'schedule': 1200,
+        'schedule': 120,
     }
 }
 
