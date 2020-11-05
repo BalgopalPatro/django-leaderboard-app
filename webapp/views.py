@@ -112,7 +112,7 @@ def index(request):
     result = firebase.get('/rank',None)
     allData = list( result.values() )[0]
     data = {
-       'data' : allData[:50],
+       'data' : allData[:-1],
        'time' : allData[-1]['time']
     }
     return HttpResponse(template.render(data))
